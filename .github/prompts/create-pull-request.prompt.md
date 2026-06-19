@@ -29,12 +29,16 @@ automatically, then run every step in order and stop on failure.
     - If there are uncommitted changes, ask for a commit message and commit them.
 
 3. **Squash multiple commits (if applicable)**
-    - Check if there are multiple commits on the current branch compared to the base branch.
-    - If multiple commits exist, ask me if I want to squash them into a single commit.
-    - If yes, perform an interactive rebase to squash:
-      - `git rebase -i $(git merge-base HEAD origin/main)` (or use `origin/<base-branch>` dynamically).
-      - Squash all commits into one with a meaningful message (derived from commit history or ask me).
-    - If no, proceed without squashing.
+    - **First, check whether the current branch is up to date with the default branch.**
+      - Fetch the latest base: `git fetch origin <base-branch>`.
+      - Count base commits missing from the branch: `git rev-list --count HEAD..origin/<base-branch>`.
+    - **If the branch is NOT up to date** (the default branch has commits the branch doesn't have):
+      - **Do NOT squash.**
+      - Update the branch with the latest base instead (e.g., `git merge origin/<base-branch>` or `git rebase origin/<base-branch>`), then proceed without squashing.
+    - **If the branch IS up to date** with the default branch:
+      - Check if there are multiple commits on the current branch compared to the base branch.
+      - If multiple commits exist, squash all commits into one with a meaningful message (derived from commit history).
+      - If no, proceed without squashing.
 
 4. **Push the branch**
     - `git push -u origin <current-branch>` (or `git push -f origin <current-branch>` if rebased).
