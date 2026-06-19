@@ -1,0 +1,17 @@
+name: CI
+
+# `workflow_dispatch` lets the GitHub MCP server trigger this on demand.
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # TODO: replace with your real build/test/lint commands
+      - name: Build & test
+        run: echo "Replace this step with your actual build and test commands"
+
