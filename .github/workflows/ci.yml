@@ -1,9 +1,10 @@
 name: CI
 
-# `workflow_dispatch` lets the GitHub MCP server trigger this on demand.
+# CI runs only when a PR is merged into main (a merge is a push to main).
+# It intentionally does NOT run on PR open/update or feature-branch pushes.
 on:
   push:
-  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 jobs:
