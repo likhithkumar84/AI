@@ -1,0 +1,34 @@
+name: On-Demand Deploy and Smoke Test
+
+# Runs from GitHub only, on demand (manual or via the GitHub MCP `run_workflow` tool).
+# Takes the branch to act on as an input.
+on:
+  workflow_dispatch:
+    inputs:
+      branch_name:
+        description: "Branch to deploy and smoke test"
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout selected branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch_name }}
+      - name: Deploy (dummy)
+        run: echo "Deploying branch '${{ inputs.branch_name }}' ... (dummy step)"
+
+  smoke-test:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout selected branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch_name }}
+      - name: Smoke test (dummy)
+        run: echo "Running smoke tests against '${{ inputs.branch_name }}' ... (dummy step)"
+
