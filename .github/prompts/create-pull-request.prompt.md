@@ -45,7 +45,7 @@ automatically, then run every step in order and stop on failure.
 
 5. **Open the pull request** (GitHub MCP server)
     - Base: default branch. Head: current branch.
-    - **Title**: Include Azure Work Item number — format: `AB#{work_item} | <concise summary>` derived from commits (confirm with me).
+    - **Title**: Include Azure Work Item number — format: `AB#{work_item} | <concise summary>` derived from commits.
     - **Body**: Follow the PR template structure (from `.github/pull_request_template.md`):
       - Platform section header
       - Pull request information → Quality Checks:

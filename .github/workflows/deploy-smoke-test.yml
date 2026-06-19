@@ -1,7 +1,5 @@
 name: On-Demand Deploy and Smoke Test
 
-# Runs from GitHub only, on demand (manual or via the GitHub MCP `run_workflow` tool).
-# Takes the branch to act on as an input.
 on:
   workflow_dispatch:
     inputs:
