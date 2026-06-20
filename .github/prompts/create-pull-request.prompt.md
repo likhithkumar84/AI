@@ -26,7 +26,11 @@ automatically, then run every step in order and stop on failure.
     - Run `git status`.
     - If I'm on `main`/`master`, ask me for a new branch name and create it
       (`git checkout -b <name>`).
-    - If there are uncommitted changes, ask for a commit message and commit them.
+    - **If there are uncommitted changes, check with me whether to commit them or not.**
+      - Ask me to choose one: **commit**, **continue without committing**, or **quit**.
+      - If I choose **commit**, ask for a commit message and commit them.
+      - If I choose **continue**, leave the changes uncommitted and proceed using only the already-committed work.
+      - If I choose **quit**, stop the workflow here and report that it was cancelled.
 
 3. **Squash multiple commits (if applicable)**
     - **First, check whether the current branch is up to date with the default branch.**
@@ -41,7 +45,14 @@ automatically, then run every step in order and stop on failure.
       - If no, proceed without squashing.
 
 4. **Push the branch**
-    - `git push -u origin <current-branch>` (or `git push -f origin <current-branch>` if rebased).
+    - Check whether the branch has local commits that aren't on the remote yet
+      (e.g., `git status` shows "ahead", or `git rev-list --count origin/<current-branch>..HEAD` > 0).
+    - **If there are commits to push**: `git push -u origin <current-branch>`
+      (or `git push -f origin <current-branch>` if rebased).
+    - **If there are NO commits to push** (nothing new and the branch is already pushed):
+      - Check whether a pull request already exists for this branch.
+      - **If no PR exists** for the branch, continue to Step 5 and create one anyway.
+      - **If a PR already exists**, return its URL and skip creating a duplicate.
 
 5. **Open the pull request** (GitHub MCP server)
     - Base: default branch. Head: current branch.

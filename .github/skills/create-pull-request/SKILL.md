@@ -35,7 +35,12 @@ determined automatically, then run every step in order and **stop on failure**.
    - Run `git status`.
    - If on `main`/`master`, ask the user for a new branch name and create it
      (`git checkout -b <name>`).
-   - If there are uncommitted changes, ask for a commit message and commit them.
+   - **If there are uncommitted changes, check with the user whether to commit them or not.**
+     - Ask the user to choose one: **commit**, **continue without committing**, or **quit**.
+     - If the user chooses **commit**, ask for a commit message and commit them.
+     - If the user chooses **continue**, leave the changes uncommitted and proceed
+       using only the already-committed work.
+     - If the user chooses **quit**, stop the workflow here and report it was cancelled.
 
 3. **Squash multiple commits (only when safe)**
    - **First, check whether the current branch is up to date with the default branch.**
@@ -54,8 +59,15 @@ determined automatically, then run every step in order and **stop on failure**.
      - Otherwise, proceed without squashing.
 
 4. **Push the branch**
-   - `git push -u origin <current-branch>`
+   - Check whether the branch has local commits that aren't on the remote yet
+     (e.g., `git status` shows "ahead", or
+     `git rev-list --count origin/<current-branch>..HEAD` > 0).
+   - **If there are commits to push**: `git push -u origin <current-branch>`
      (or `git push -f origin <current-branch>` if the branch was rebased).
+   - **If there are NO commits to push** (nothing new and the branch is already pushed):
+     - Check whether a pull request already exists for this branch.
+     - **If no PR exists** for the branch, continue to step 5 and create one anyway.
+     - **If a PR already exists**, return its URL and skip creating a duplicate.
 
 5. **Open the pull request**
    - Base: default branch. Head: current branch.
@@ -124,3 +136,8 @@ checklist unchecked for the reviewer.
 - Never force-push unless the branch was rebased in step 3.
 - Do not squash when the branch is behind the default branch.
 - Always include the `AB#` work item number in the PR title.
+- When there are uncommitted changes, always **check with the user** whether to
+  commit them, continue without committing, or quit — never auto-commit silently.
+- Never create a duplicate PR: if a PR already exists for the branch, return it
+  instead. If the branch is already pushed with nothing new to push and no PR
+  exists, still create the PR.
